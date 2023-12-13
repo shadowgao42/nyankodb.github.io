@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No.001 (테스트)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      const ot002=300
+      const ot003=300
+      const mag=1
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/data/unit/stat/unit001.csv')
+                .then(response => response.text())
+                .then(csvText => {
+                    const rows = csvText.split('\n');
+                    const values = rows[1].split(',');
+                    const hp =Math.floor((1+0.5*ot003/100)*Math.round(parseInt(values[0], 10) *mag));
+                    document.getElementById('hp').textContent = `체력(레벨1기준): ${hp}`;
+                })
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+<div id="hp"></div>
+</body>
+</html>
+</html>
