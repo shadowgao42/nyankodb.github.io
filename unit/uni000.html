@@ -27,7 +27,7 @@
                     const aspeedD = parseInt(formf[4], 10); <!--데이터상 마무리; 수정 예정 -->
                     const rrange = parseInt(formf[5], 10);
                     const cost = Math.floor(parseInt(formf[6], 10)*costmag);
-                    const cdf = Math.max(parseInt(formf[7], 10)*2-(0.3*ot007+6*(p66-1)),60); <!--소수점 처리방식 찾아서 수정하기-->
+                    const cdf = Math.max(Math.floor(parseInt(formf[7], 10)*2-(0.3*ot007+6*(p66-1))),60);
                     const cds = (cdf/30).toFixed(2)
                     const tpref = parseInt(formf[13], 10);
                     const tpres = (tpref/30).toFixed(2);
