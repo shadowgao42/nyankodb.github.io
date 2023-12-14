@@ -6,9 +6,9 @@
     <title>No.001 (테스트)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      const ot002=300
-      const ot003=300
-      const mag=1
+    const ot002=300
+    const ot003=300
+    const mag=1
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -18,7 +18,9 @@
                     const rows = csvText.split('\n');
                     const values = rows[1].split(',');
                     const hp =Math.floor((1+0.5*ot003/100)*Math.round(parseInt(values[0], 10) *mag));
+                    const kb =parseInt(values[1], 10);
                     document.getElementById('hp').textContent = `체력(레벨1기준): ${hp}`;
+                    document.getElementById('kb').textContent = `KB: ${kb}`;
                 })
         });
     </script>
@@ -26,6 +28,7 @@
 <body class="bg-gray-100">
 <img src="/img/unit/uni/uni01/uni000_f00.png">
 <div id="hp"></div>
+<div id="kb"></div>
 </body>
 </html>
 </html>
