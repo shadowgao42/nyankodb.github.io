@@ -6,30 +6,38 @@
     <title>No.001 (테스트)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        const ot002=300 <!-- 공격력 보물 배율 -->
-        const ot003=300 <!-- 체력 보물 배율 -->
-        const mag=1 <!-- 레벨업 배율 -->
-        const costmag=1.5<!-- 세계편1장대비 코스트 배율 -->
+        const ot002=300 <!-- 공격력 보물 배율; 수정예정 -->
+        const ot003=300 <!-- 체력 보물 배율; 수정예정 -->
+        const ot007=300/7 <!-- 연구력 보물 배율; 수정예정 -->
+        const p66=30 <!-- 연구력 패시브 레벨; 수정예정 -->
+        const mag=1 <!-- 레벨업 보물 배율; 수정예정 -->
+        const costmag=1.5 <!--세계편1장대비 코스트 배율; 수정예정 -->
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/data/unit/stat/unit001.csv')
+            fetch('https://shadowgao42.github.io/data/unit/stat/unit001.csv')
                 .then(response => response.text())
                 .then(csvText => {
                     const rows = csvText.split('\n');
                     const formf = rows[0].split(',');
-                    const hp =Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
-                    const kb =parseInt(formf[1], 10);
-                    const mspeed =parseInt(formf[2], 10);
-                    const atk =Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
-                    const aspeedD =parseInt(formf[4], 10); <!--데이터상 마무리; 수정 예정 -->
-                    const rrange =parseInt(formf[5], 10);
-                    const cost =Math.floor(parseInt(formf[6], 10)*costmag);
+                    const hp = Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
+                    const kb = parseInt(formf[1], 10);
+                    const mspeed = parseInt(formf[2], 10);
+                    const atk = Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
+                    const aspeedD = parseInt(formf[4], 10); <!--데이터상 마무리; 수정 예정 -->
+                    const rrange = parseInt(formf[5], 10);
+                    const cost = Math.floor(parseInt(formf[6], 10)*costmag);
+                    const cdf = Math.max(parseInt(formf[7], 10)*2-(0.3*ot007+6*(p66-1)),60); <!--소수점 처리방식 찾아서 수정하기-->
+                    const cds = (cdf/30).toFixed(2)
+                    const tpref = parseInt(formf[13], 10);
+                    const tpres = (tpref/30).toFixed(2);
                     document.getElementById('cost').textContent = `코스트: ${cost}원`;
+                    document.getElementById('cd').textContent = `쿨타임: ${cdf}f/${cds}초`;
                     document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
                     document.getElementById('kb').textContent = `KB: ${kb}`;
                     document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
                     document.getElementById('rrange').textContent = `사거리: ${rrange}`;
+                    document.getElementById('tpre').textContent = `선딜: ${tpref}f/${tpres}초`;
                     document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
                 })
         });
@@ -38,10 +46,12 @@
 <body class="bg-gray-100">
 <img src="/img/unit/uni/uni01/uni000_f00.png">
 <div id="cost"></div>
+<div id="cd"></div>
 <div id="hp"></div>
 <div id="kb"></div>
 <div id="atk"></div>
 <div id="rrange"></div>
+<div id="tpre"></div>
 <div id="mspeed"></div>
 </body>
 </html>
