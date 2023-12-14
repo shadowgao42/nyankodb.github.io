@@ -21,17 +21,18 @@
                     const hp =Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
                     const kb =parseInt(formf[1], 10);
                     const mspeed =parseInt(formf[2], 10);
-                    const atk=Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
-                    const aspeedD=parseInt(formf[4], 10); 
-                    const rrange=parseInt(formf[5], 10);
-                    const cost=Math.floor(parseInt(formf[6], 10)*costmag);
+                    const atk =Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
+                    const aspeedD =parseInt(formf[4], 10); 
+                    const rrange =parseInt(formf[5], 10);
+                    const cost =Math.floor(parseInt(formf[6], 10)*costmag);
+
+                    document.getElementById('cost').textContent = `코스트: ${cost}`;
                     document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
                     document.getElementById('kb').textContent = `KB: ${kb}`;
-                    document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
                     document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
-                    document.getElementById('aspeedD').textContent = `데이터상 마무리: ${aspeedD}`;
                     document.getElementById('rrange').textContent = `사거리: ${rrange}`;
-                    document.getElementById('cost').textContent = `코스트: ${cost}`;
+                    document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
+                    document.getElementById('aspeedD').textContent = `데이터상 마무리: ${aspeedD}`;
                 })
         });
     </script>
@@ -44,5 +45,6 @@
 <div id="atk"></div>
 <div id="rrange"></div>
 <div id="mspeed"></div>
+<div id="aspeedD"></div>
 </body>
 </html>
