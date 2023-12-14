@@ -20,7 +20,7 @@
                     const formf = rows[0].split(',');
                     const hp =Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
                     const kb =parseInt(formf[1], 10);
-                    const atk=Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[2], 10) *mag));
+                    const atk=Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
                     const cost=Math.floor(parseInt(formf[6], 10)*costmag);
                     document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
                     document.getElementById('kb').textContent = `KB: ${kb}`;
