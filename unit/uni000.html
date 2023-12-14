@@ -21,7 +21,6 @@
         const aspeedD =parseInt(formf[4], 10); <!--데이터상 마무리; 수정 예정 -->
         const rrange =parseInt(formf[5], 10);
         const cost =Math.floor(parseInt(formf[6], 10)*costmag);
-        const atype = if(parseInt(formf[12], 10)=0){단일}else{범위};
         const tpre =parseInt(formf[13], 10);
     </script>
     <script>
@@ -35,7 +34,6 @@
                     document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
                     document.getElementById('kb').textContent = `KB: ${kb}`;
                     document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
-                    document.getElementById('atype').textContent = `공격 타입: ${atype}`;
                     document.getElementById('rrange').textContent = `사거리: ${rrange}`;
                     document.getElementById('tpre').textContent = `선딜: ${tpre}`;
                     document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
