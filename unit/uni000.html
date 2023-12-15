@@ -15,11 +15,11 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('https://shadowgao42.github.io/data/unit/stat/unit001.csv')
+            fetch('/data/unit/stat/unit001.csv')
                 .then(response => response.text())
                 .then(csvText => {
-                    const rows = csvText.split('\n');
-                    const formf = rows[0].split(',');
+                    const Drows = csvText.split('\n');
+                    const formf = Drows[0].split(',');
                     const hp = Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
                     const kb = parseInt(formf[1], 10);
                     const mspeed = parseInt(formf[2], 10);
@@ -42,9 +42,24 @@
                 })
         });
     </script>
+    <script>
+            async function fetchData() {
+                const Eresponse = await fetch('/res/unit/Unit_Explanation1_ko.csv');
+                const Edata = await Eresponse.text();
+                const Erows = Edata.split('\n');
+                const explf = Erows[0].split('|');
+                const namef = explf.shift();
+                const descf = explf.join(' ');
+                document.getElementById('namef').textContent = namef;
+                document.getElementById('descf').textContent = descf;
+            }
+            fetchData().catch(console.error);
+    </script>
 </head>
 <body class="bg-gray-100">
 <img src="/img/unit/uni/uni01/uni000_f00.png">
+<div class="text-lg font-semibold"><span id="namef"></span></div>
+<div class="text-lg"><span id="descf"></span></div>
 <div id="cost"></div>
 <div id="cd"></div>
 <div id="hp"></div>
