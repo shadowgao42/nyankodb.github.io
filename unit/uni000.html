@@ -5,63 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No.001 (테스트)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        const ot002=300 <!-- 공격력 보물 배율; 수정예정 -->
-        const ot003=300 <!-- 체력 보물 배율; 수정예정 -->
-        const ot007=300/7 <!-- 연구력 보물 배율; 수정예정 -->
-        const p66=30 <!-- 연구력 패시브 레벨; 수정예정 -->
-        const mag=1 <!-- 레벨업 보물 배율; 수정예정 -->
-        const costmag=1.5 <!--세계편1장대비 코스트 배율; 수정예정 -->
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/data/unit/stat/unit001.csv')
-                .then(response => response.text())
-                .then(csvText => {
-                    const Drows = csvText.split('\n');
-                    const formf = Drows[0].split(',');
-                    const hp = Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
-                    const kb = parseInt(formf[1], 10);
-                    const mspeed = parseInt(formf[2], 10);
-                    const atk = Math.floor((1+0.5*ot002/100)*Math.round(parseInt(formf[3], 10) *mag));
-                    const aspeedD = parseInt(formf[4], 10); <!--데이터상 마무리; 수정 예정 -->
-                    const rrange = parseInt(formf[5], 10);
-                    const cost = Math.floor(parseInt(formf[6], 10)*costmag);
-                    const cdf = Math.max(Math.floor(parseInt(formf[7], 10)*2-(0.3*ot007+6*(p66-1))),60);
-                    const cds = (cdf/30).toFixed(2);
-                    const atktype0="단일 공격"; const atktype1="범위 공격";
-                    const atktype = eval('atktype'+parseInt(formf[12], 10));
-                    const tpref = parseInt(formf[13], 10);
-                    const tpres = (tpref/30).toFixed(2);
-                    document.getElementById('cost').textContent = `코스트: ${cost}원`;
-                    document.getElementById('cd').textContent = `쿨타임: ${cdf}f/${cds}초`;
-                    document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
-                    document.getElementById('kb').textContent = `KB: ${kb}`;
-                    document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
-                    document.getElementById('atktype').textContent = `공격 타입: ${atktype}`;
-                    document.getElementById('rrange').textContent = `사거리: ${rrange}`;
-                    document.getElementById('tpre').textContent = `선딜: ${tpref}f/${tpres}초`;
-                    document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
-                })
-        });
-    </script>
-    <script>
-            async function fetchData() {
-                const Eresponse = await fetch('/res/unit/Unit_Explanation1_ko.csv');
-                const Edata = await Eresponse.text();
-                const Erows = Edata.split('\n');
-                const explf = Erows[0].split('|');
-                const namef = explf.shift();
-                document.getElementById('namef').textContent = namef;
-                document.getElementById('descf').innerHTML = explf.map(value => `<p>${value}</p>`).join('');
-            }
-            fetchData().catch(console.error);
-    </script>
+    <style>
+        .trait-box {
+            background-color: #eaeaea; 
+            padding: 10px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            max-width: fit-content;
+            border-radius: 20px;
+        }
+
+        .attribute {
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        #imagesContainer img {
+            margin-right: 10px;
+            width: 30px
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
-<img src="/img/unit/uni/uni01/uni000_f00.png">
+<script>
+    const ot002=300 //공격력 보물 배율; 수정예정
+    const ot003=300 // 체력 보물 배율; 수정예정 
+    const ot007=300/7 // 연구력 보물 배율; 수정예정 
+    const p66=30 // 연구력 패시브 레벨; 수정예정 
+    const mag=1 // 레벨업 보물 배율; 수정예정 
+    const costmag=1.5  // 계편1장대비 코스트 배율; 수정예정
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('https://shadowgao42.github.io/data/unit/stat/unit001.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                const Drows = csvText.split('\n');
+                const formf = Drows[0].split(',');
+                const hp = Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
+                const kb = formf[1];
+                const mspeed = formf[2];
+                const atk = Math.floor((1+0.5*ot002/100)*Math.round(formf[3]*mag));
+                const aspeedD = formf[4]; // 데이터상 마무리; 수정 예정 
+                const rrange = formf[5];
+                const cost = Math.floor(formf[6]*costmag);
+                const cdf = Math.max(Math.floor(formf[7]*2-(0.3*ot007+6*(p66-1))),60);
+                const cds = (cdf/30).toFixed(2);
+                const atktype0="단일 공격"; const atktype1="범위 공격";
+                const atktype = eval('atktype'+formf[12]);
+                const tpref = formf[13];
+                const tpres = (tpref/30).toFixed(2);
+                const target01 = formf[10]; // 빨
+                const target02 = formf[16]; // 떠
+                const target03 = formf[17]; // 검
+                const target04 = formf[20]; // 천
+                const target05 = formf[21]; // 에
+                const target06 = formf[18]; // 메
+                const target07 = formf[22]; // 좀
+                const target08 = formf[78]; // 고
+                const target09 = formf[96]; // 악
+                const target10 = formf[19]; // 무
+                document.getElementById('cost').textContent = `코스트: ${cost}원`;
+                document.getElementById('cd').textContent = `쿨타임: ${cdf}f/${cds}초`;
+                document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
+                document.getElementById('kb').textContent = `KB: ${kb}`;
+                document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
+                document.getElementById('atktype').textContent = `공격 타입: ${atktype}`;
+                document.getElementById('rrange').textContent = `사거리: ${rrange}`;
+                document.getElementById('tpre').textContent = `선딜: ${tpref}f/${tpres}초`;
+                if (target01 == '1') {
+                    const imgElement1 = document.createElement('img');
+                    imgElement1.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target01_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement1);
+                }
+                if (target02 == '1') {
+                    const imgElement2 = document.createElement('img');
+                    imgElement2.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target02_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement2);
+                }
+                if (target03 == '1') {
+                    const imgElement3 = document.createElement('img');
+                    imgElement3.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target03_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement3);
+                }
+                if (target06 == '1') {
+                    const imgElement6 = document.createElement('img');
+                    imgElement6.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target06_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement6);
+                }
+                if (target04 == '1') {
+                    const imgElement4 = document.createElement('img');
+                    imgElement4.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target04_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement4);
+                }
+                if (target05 == '1') {
+                    const imgElement5 = document.createElement('img');
+                    imgElement5.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target05_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement5);
+                }
+                if (target07 == '1') {
+                    const imgElement7 = document.createElement('img');
+                    imgElement7.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target07_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement7);
+                }
+                if (target09 == '1') {
+                    const imgElement9 = document.createElement('img');
+                    imgElement9.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target09_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement9);
+                }
+                if (target08 == '1') {
+                    const imgElement8 = document.createElement('img');
+                    imgElement8.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target08_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement8);
+                }
+                if (target10 == '1') {
+                    const imgElement10 = document.createElement('img');
+                    imgElement10.src = 'https://shadowgao42.github.io/img/icon/trait/zukan_target10_kr.png';
+                    document.getElementById('imagesContainer').appendChild(imgElement10);
+                }
+            })
+    });
+</script>
+<script>
+        async function fetchData() {
+            const Eresponse = await fetch('https://shadowgao42.github.io/res/unit/Unit_Explanation1_ko.csv');
+            const Edata = await Eresponse.text();
+            const Erows = Edata.split('\n');
+            const explf = Erows[0].split('|');
+            const namef = explf.shift();
+            document.getElementById('namef').textContent = namef;
+            document.getElementById('descf').innerHTML = explf.map(value => `<p>${value}</p>`).join('');
+        }
+        fetchData().catch(console.error);
+</script>
+
+<img src="https://shadowgao42.github.io/img/unit/uni/uni01/uni000_f00.png">
 <div class="text-lg font-semibold"><span id="namef"></span></div>
 <div class="text-lg"><span id="descf"></span></div>
+<br>
+<div class="trait-box">
+    <div class="attribute">속성 |</div>
+    <div id="imagesContainer" class="flex items-center"></div>
+</div>   
 <br>
 <div id="cost"></div>
 <div id="cd"></div>
@@ -72,5 +159,6 @@
 <div id="rrange"></div>
 <div id="tpre"></div>
 <div id="mspeed"></div>
+
 </body>
 </html>
