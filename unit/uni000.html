@@ -28,7 +28,9 @@
                     const rrange = parseInt(formf[5], 10);
                     const cost = Math.floor(parseInt(formf[6], 10)*costmag);
                     const cdf = Math.max(Math.floor(parseInt(formf[7], 10)*2-(0.3*ot007+6*(p66-1))),60);
-                    const cds = (cdf/30).toFixed(2)
+                    const cds = (cdf/30).toFixed(2);
+                    const atktype0="단일 공격"; const atktype1="범위 공격";
+                    const atktype = eval('atktype'+parseInt(formf[12], 10));
                     const tpref = parseInt(formf[13], 10);
                     const tpres = (tpref/30).toFixed(2);
                     document.getElementById('cost').textContent = `코스트: ${cost}원`;
@@ -36,6 +38,7 @@
                     document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
                     document.getElementById('kb').textContent = `KB: ${kb}`;
                     document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
+                    document.getElementById('atktype').textContent = `공격 타입: ${atktype}`;
                     document.getElementById('rrange').textContent = `사거리: ${rrange}`;
                     document.getElementById('tpre').textContent = `선딜: ${tpref}f/${tpres}초`;
                     document.getElementById('mspeed').textContent = `이동 속도: ${mspeed}`;
@@ -49,9 +52,8 @@
                 const Erows = Edata.split('\n');
                 const explf = Erows[0].split('|');
                 const namef = explf.shift();
-                const descf = explf.join(' ');
                 document.getElementById('namef').textContent = namef;
-                document.getElementById('descf').textContent = descf;
+                document.getElementById('descf').innerHTML = explf.map(value => `<p>${value}</p>`).join('');
             }
             fetchData().catch(console.error);
     </script>
@@ -60,11 +62,13 @@
 <img src="/img/unit/uni/uni01/uni000_f00.png">
 <div class="text-lg font-semibold"><span id="namef"></span></div>
 <div class="text-lg"><span id="descf"></span></div>
+<br>
 <div id="cost"></div>
 <div id="cd"></div>
 <div id="hp"></div>
 <div id="kb"></div>
 <div id="atk"></div>
+<div id="atktype"></div>
 <div id="rrange"></div>
 <div id="tpre"></div>
 <div id="mspeed"></div>
