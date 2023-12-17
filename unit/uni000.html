@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No.001 (테스트)</title>
@@ -31,24 +32,53 @@
 </head>
 <body class="bg-gray-100">
 <script>
+    const unitid=1 // 유닛 ID
     const ot002=300 //공격력 보물 배율; 수정예정
     const ot003=300 // 체력 보물 배율; 수정예정 
-    const ot007=300 // 연구력 보물 배율; 수정예정 
+    const ot007=300 // 연구력 보물 배율; 수정예정
     const p66=30 // 연구력 패시브 레벨; 수정예정 
-    const mag=1 // 레벨업 보물 배율; 수정예정 
     const costmag=1.5  // 세계편1장대비 코스트 배율; 수정예정
-</script>
-<script>
+
+    function pad(x) 
+    {
+    if (x <= 999) 
+    { 
+        x = ("00"+ x).slice(-6); 
+    }
+    return x;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('https://shadowgao42.github.io/data/unit/stat/unit001.csv')
+        fetch('https://shadowgao42.github.io/data/unit/unitlevel.csv')
+                .then(response => response.text())
+                .then(csvText => {
+                    const levelRows = csvText.split('\n');
+                    const levelForm = levelRows[0].split(',');
+                    const lvl=50;
+                    function inFunction(n) {
+                            const index = Math.ceil(n / 10) - 1;
+                            return parseFloat(levelForm[index]);
+                        }
+                    function calculateMag() {
+                            let sum = 0;
+                            for (let n = 2; n <= lvl; n++) {
+                                sum += inFunction(n);
+                            }
+                            mag = 1 + (sum / 100);
+                            return mag;
+                        }     
+                        document.getElementById('mag').textContent = `배율: ${calculateMag()}`;
+                    })  
+        
+        fetch('https://shadowgao42.github.io/data/unit/stat/unit'+pad(unitid)+'.csv')
             .then(response => response.text())
             .then(csvText => {
                 const Drows = csvText.split('\n');
                 const formf = Drows[0].split(',');
-                const hp = Math.floor((1+0.5*ot003/100)*Math.round(parseInt(formf[0], 10) *mag));
+                const hp = Math.floor((1+0.5*ot003/100)*Math.round(formf[0]*1)); // 1 대신 mag 
                 const kb = formf[1];
                 const mspeed = formf[2];
-                const atk = Math.floor((1+0.5*ot002/100)*Math.round(formf[3]*mag));
+                const atk = Math.floor((1+0.5*ot002/100)*Math.round(formf[3]*1)); // 1 대신 mag
                 const aspeedD = formf[4]; // 데이터상 마무리; 수정 예정 
                 const rrange = formf[5];
                 const cost = Math.floor(formf[6]*costmag);
@@ -128,18 +158,17 @@
                 }
             })
     });
-</script>
-<script>
-        async function fetchData() {
-            const Eresponse = await fetch('https://shadowgao42.github.io/res/unit/Unit_Explanation1_ko.csv');
-            const Edata = await Eresponse.text();
-            const Erows = Edata.split('\n');
-            const explf = Erows[0].split('|');
-            const namef = explf.shift();
-            document.getElementById('namef').textContent = namef;
-            document.getElementById('descf').innerHTML = explf.map(value => `<p>${value}</p>`).join('');
-        }
-        fetchData().catch(console.error);
+
+    async function fetchData() {
+        const Eresponse = await fetch('https://shadowgao42.github.io/res/unit/Unit_Explanation'+unitid+'_ko.csv');
+        const Edata = await Eresponse.text();
+        const Erows = Edata.split('\n');
+        const explf = Erows[0].split('|');
+        const namef = explf.shift();
+        document.getElementById('namef').textContent = namef;
+        document.getElementById('descf').innerHTML = explf.map(value => `<p>${value}</p>`).join('');
+    }
+    fetchData().catch(console.error);
 </script>
 
 <img src="https://shadowgao42.github.io/img/unit/uni/uni01/uni000_f00.png">
@@ -151,6 +180,7 @@
     <div id="imagesContainer" class="flex items-center"></div>
 </div>   
 <br>
+<div id="mag"></div>
 <div id="cost"></div>
 <div id="cd"></div>
 <div id="hp"></div>
