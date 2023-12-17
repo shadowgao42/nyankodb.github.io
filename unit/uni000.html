@@ -32,6 +32,7 @@
 </head>
 <body class="bg-gray-100">
 <script>
+    const lvl=30 // 레벨
     const unitid=1 // 유닛 ID
     const ot002=300 //공격력 보물 배율; 수정예정
     const ot003=300 // 체력 보물 배율; 수정예정 
@@ -53,8 +54,7 @@
                 .then(response => response.text())
                 .then(csvText => {
                     const levelRows = csvText.split('\n');
-                    const levelForm = levelRows[0].split(',');
-                    const lvl=50;
+                    const levelForm = levelRows[unitid].split(',');
                     function inFunction(n) {
                             const index = Math.ceil(n / 10) - 1;
                             return parseFloat(levelForm[index]);
@@ -67,7 +67,7 @@
                             mag = 1 + (sum / 100);
                             return mag;
                         }     
-                        document.getElementById('mag').textContent = `배율: ${calculateMag()}`;
+                        document.getElementById('mag').textContent = `${calculateMag()}`;
                     })  
         
         fetch('https://shadowgao42.github.io/data/unit/stat/unit'+pad(unitid)+'.csv')
@@ -75,10 +75,10 @@
             .then(csvText => {
                 const Drows = csvText.split('\n');
                 const formf = Drows[0].split(',');
-                const hp = Math.floor((1+0.5*ot003/100)*Math.round(formf[0]*1)); // 1 대신 mag 
+                const hp = Math.floor((1+0.5*ot003/100)*Math.round(formf[0]*mag)); // 1 대신 mag 
                 const kb = formf[1];
                 const mspeed = formf[2];
-                const atk = Math.floor((1+0.5*ot002/100)*Math.round(formf[3]*1)); // 1 대신 mag
+                const atk = Math.floor((1+0.5*ot002/100)*Math.round(formf[3]*mag)); // 1 대신 mag
                 const aspeedD = formf[4]; // 데이터상 마무리; 수정 예정 
                 const rrange = formf[5];
                 const cost = Math.floor(formf[6]*costmag);
@@ -100,9 +100,9 @@
                 const target10 = formf[19]; // 무
                 document.getElementById('cost').textContent = `코스트: ${cost}원`;
                 document.getElementById('cd').textContent = `쿨타임: ${cdf}f/${cds}초`;
-                document.getElementById('hp').textContent = `체력(1레벨기준): ${hp}`;
+                document.getElementById('hp').textContent = `체력(${lvl}레벨기준): ${hp}`;
                 document.getElementById('kb').textContent = `KB: ${kb}`;
-                document.getElementById('atk').textContent = `공격력(1레벨기준): ${atk}`;
+                document.getElementById('atk').textContent = `공격력(${lvl}레벨기준): ${atk}`;
                 document.getElementById('atktype').textContent = `공격 타입: ${atktype}`;
                 document.getElementById('rrange').textContent = `사거리: ${rrange}`;
                 document.getElementById('tpre').textContent = `선딜: ${tpref}f/${tpres}초`;
@@ -180,7 +180,7 @@
     <div id="imagesContainer" class="flex items-center"></div>
 </div>   
 <br>
-<div id="mag"></div>
+
 <div id="cost"></div>
 <div id="cd"></div>
 <div id="hp"></div>
